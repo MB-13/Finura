@@ -1,0 +1,15 @@
+# context is the repo root (see Dockerfile); keep it small and keep secrets out
+**/.venv
+**/.data
+**/.env
+**/__pycache__
+**/.pytest_cache
+**/.mypy_cache
+**/.ruff_cache
+.git
+frontend
+docs
+backend/tests
+notebook/spike
+notebook/tests
+notebook/dist

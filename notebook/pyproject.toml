@@ -1,0 +1,64 @@
+[project]
+name = "doctune-nb"
+version = "0.1.0"
+description = "DocTune training notebook helpers (Colab / any Python + GPU runtime)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+# Core: only what the API client needs. The package must import without torch.
+dependencies = ["requests>=2.31,<3"]
+
+[project.optional-dependencies]
+# GPU training stack, pinned to the versions measured on a free Colab T4 (ADR-0001).
+# Bump deliberately and re-run the release checklist (T3.12).
+train = [
+    "unsloth==2026.10.1",
+    "unsloth_zoo==2026.10.1",
+    "torch==2.11.0",
+    "transformers==5.17.0",
+    "trl==1.13.0",
+    "peft==0.21.1",
+    "bitsandbytes==0.50.2",
+    "accelerate==1.15.0",
+    "datasets==4.8.5",
+    "huggingface_hub>=0.30",
+    "psutil>=5.9",
+    "tqdm>=4.66",
+]
+# CPU smoke test (plain PEFT, no Unsloth). Install torch from the CPU index:
+#   uv pip install torch==2.11.0 --index-url https://download.pytorch.org/whl/cpu
+smoke = [
+    "torch==2.11.0",
+    "transformers==5.17.0",
+    "trl==1.13.0",
+    "peft==0.21.1",
+    "accelerate==1.15.0",
+    "datasets==4.8.5",
+]
+dev = ["pytest>=8", "ruff>=0.6", "nbformat>=5.9"]
+
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["doctune_nb"]
+
+[tool.hatch.build.targets.sdist]
+include = ["doctune_nb", "README.md", "pyproject.toml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["slow: CPU smoke test that downloads a tiny model (run with --run-slow)"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+extend-exclude = ["spike"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM"]
+ignore = ["B008"]
+
+[tool.ruff.lint.per-file-ignores]
+"*.ipynb" = ["E402", "F821"]

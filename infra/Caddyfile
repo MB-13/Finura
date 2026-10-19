@@ -1,0 +1,20 @@
+{$API_DOMAIN} {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+	# uploads/downloads through the local storage stand-in can be large (checkpoints up to 1.5 GB)
+	request_body {
+		max_size 1600MB
+	}
+	reverse_proxy api:8000 {
+		# SSE: stream immediately
+		flush_interval -1
+		transport http {
+			read_timeout 0
+		}
+	}
+}

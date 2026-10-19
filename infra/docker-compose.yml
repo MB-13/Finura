@@ -1,0 +1,95 @@
+# Production stack for the Oracle Always Free ARM VM (2 OCPU / 12 GB) — docs/plan/08 §3, plan D19.
+# Usage on the VM:  cp env.example .env  (fill in)  &&  docker compose up -d
+name: doctune
+
+x-backend: &backend
+  image: ghcr.io/${GHCR_OWNER:-doctune}/doctune-backend:${IMAGE_TAG:-latest}
+  env_file: .env
+  restart: unless-stopped
+  volumes:
+    - storage:/app/.data/storage
+    - models:/app/.data/models
+  depends_on:
+    redis: { condition: service_healthy }
+  logging: &logging
+    driver: json-file
+    options: { max-size: "10m", max-file: "5" }
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      API_DOMAIN: ${API_DOMAIN}
+    depends_on: [api]
+    logging: *logging
+
+  api:
+    <<: *backend
+    command: ["uvicorn", "doctune.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2", "--proxy-headers",
+              "--forwarded-allow-ips", "*"]
+    mem_limit: 900m
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  worker-parse:
+    <<: *backend
+    command: ["celery", "-A", "doctune.workers.celery_app", "worker", "-Q", "parse", "-c", "1", "-n", "parse@%h",
+              "--max-tasks-per-child", "50"]
+    mem_limit: 2g
+
+  worker-llm:
+    <<: *backend
+    command: ["celery", "-A", "doctune.workers.celery_app", "worker", "-Q", "llm", "-P", "threads", "-c", "8", "-n", "llm@%h"]
+    mem_limit: 512m
+
+  worker-cpu:
+    <<: *backend
+    command: ["celery", "-A", "doctune.workers.celery_app", "worker", "-Q", "embed,default", "-c", "2", "-n", "cpu@%h",
+              "--max-tasks-per-child", "100"]
+    mem_limit: 1536m
+
+  worker-inference:
+    <<: *backend
+    image: ghcr.io/${GHCR_OWNER:-doctune}/doctune-inference:${IMAGE_TAG:-latest}
+    command: ["celery", "-A", "doctune.workers.celery_app", "worker", "-Q", "inference", "-c", "1", "-n", "inference@%h"]
+    environment:
+      LLAMA_CPP_DIR: /opt/llama.cpp
+      LLAMA_CONVERT_PYTHON: /opt/llama.cpp/.venv/bin/python
+      LLAMA_SERVER_BIN: /opt/llama.cpp/build/bin/llama-server
+      LLAMA_HOST: worker-inference
+      LLAMA_THREADS: "2"
+    mem_limit: 4g
+
+  beat:
+    <<: *backend
+    command: ["celery", "-A", "doctune.workers.celery_app", "beat", "-s", "/tmp/celerybeat-schedule"]
+    mem_limit: 160m
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "256mb", "--maxmemory-policy", "noeviction",
+              "--requirepass", "${REDIS_PASSWORD}"]
+    volumes: [redis:/data]
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      retries: 10
+    mem_limit: 320m
+    logging: *logging
+
+volumes:
+  storage:
+  models:
+  redis:
+  caddy_data:
+  caddy_config:

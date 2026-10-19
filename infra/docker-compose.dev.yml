@@ -1,0 +1,36 @@
+# Local development services for DocTune.
+# Host ports are offset (5xxxx) to avoid clashing with other local services.
+name: doctune-dev
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: doctune
+      POSTGRES_PASSWORD: doctune
+      POSTGRES_DB: doctune
+    ports: ["127.0.0.1:55432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U doctune"]
+      interval: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports: ["127.0.0.1:56379:6379"]
+    volumes: [redisdata:/data]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      retries: 20
+
+  # catches all outgoing email in dev: UI at http://localhost:58025
+  mailpit:
+    image: axllent/mailpit:latest
+    ports: ["127.0.0.1:58025:8025", "127.0.0.1:51025:1025"]
+
+volumes:
+  pgdata:
+  redisdata:

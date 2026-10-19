@@ -1,0 +1,343 @@
+@import "@fontsource-variable/inter/opsz.css";
+@import "@fontsource-variable/geist-mono";
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+
+    --shadow-xs: var(--shadow-xs-value);
+    --shadow-sm: var(--shadow-sm-value);
+    --shadow-md: var(--shadow-md-value);
+    --shadow-lg: var(--shadow-lg-value);
+    --shadow-card: var(--shadow-card-value);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-destructive-muted: var(--destructive-muted);
+    --color-destructive-muted-foreground: var(--destructive-muted-foreground);
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+    --color-success-muted: var(--success-muted);
+    --color-success-muted-foreground: var(--success-muted-foreground);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
+    --color-warning-muted: var(--warning-muted);
+    --color-warning-muted-foreground: var(--warning-muted-foreground);
+    --color-info: var(--info);
+    --color-info-foreground: var(--info-foreground);
+    --color-info-muted: var(--info-muted);
+    --color-info-muted-foreground: var(--info-muted-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+    --radius: 0.75rem;
+    --background: oklch(0.985 0.003 277);
+    --foreground: oklch(0.22 0.025 277);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.22 0.025 277);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.22 0.025 277);
+    --primary: oklch(0.52 0.22 277);
+    --primary-foreground: oklch(0.99 0.005 277);
+    --secondary: oklch(0.955 0.008 277);
+    --secondary-foreground: oklch(0.28 0.03 277);
+    --muted: oklch(0.96 0.006 277);
+    --muted-foreground: oklch(0.5 0.025 277);
+    --accent: oklch(0.955 0.025 277);
+    --accent-foreground: oklch(0.38 0.17 277);
+    --border: oklch(0.92 0.006 277);
+    --input: oklch(0.88 0.012 277);
+    --ring: oklch(0.6 0.2 277);
+
+    /* semantic status colours: solid (dot/fill), text-on-solid, soft background, text-on-soft */
+    --destructive: oklch(0.54 0.23 27);
+    --destructive-foreground: oklch(0.99 0.005 27);
+    --destructive-muted: oklch(0.96 0.025 27);
+    --destructive-muted-foreground: oklch(0.45 0.19 27);
+    --success: oklch(0.55 0.15 152);
+    --success-foreground: oklch(0.99 0.005 152);
+    --success-muted: oklch(0.96 0.04 152);
+    --success-muted-foreground: oklch(0.4 0.12 152);
+    --warning: oklch(0.76 0.16 75);
+    --warning-foreground: oklch(0.25 0.05 70);
+    --warning-muted: oklch(0.97 0.05 85);
+    --warning-muted-foreground: oklch(0.44 0.1 65);
+    --info: oklch(0.58 0.17 245);
+    --info-foreground: oklch(0.99 0.005 245);
+    --info-muted: oklch(0.96 0.028 245);
+    --info-muted-foreground: oklch(0.43 0.15 250);
+
+    --chart-1: oklch(0.52 0.22 277);
+    --chart-2: oklch(0.68 0.13 195);
+    --chart-3: oklch(0.76 0.16 75);
+    --chart-4: oklch(0.62 0.21 340);
+    --chart-5: oklch(0.62 0.15 152);
+
+    --sidebar: oklch(0.985 0.003 277);
+    --sidebar-foreground: oklch(0.22 0.025 277);
+    --sidebar-primary: oklch(0.52 0.22 277);
+    --sidebar-primary-foreground: oklch(0.99 0.005 277);
+    --sidebar-accent: oklch(0.955 0.025 277);
+    --sidebar-accent-foreground: oklch(0.38 0.17 277);
+    --sidebar-border: oklch(0.92 0.006 277);
+    --sidebar-ring: oklch(0.6 0.2 277);
+
+    --shadow-xs-value: 0 1px 2px 0 oklch(0.25 0.05 277 / 0.06);
+    --shadow-sm-value: 0 1px 2px 0 oklch(0.25 0.05 277 / 0.06), 0 1px 3px 0 oklch(0.25 0.05 277 / 0.08);
+    --shadow-md-value: 0 2px 4px -1px oklch(0.25 0.05 277 / 0.06), 0 6px 12px -2px oklch(0.25 0.05 277 / 0.09);
+    --shadow-lg-value: 0 4px 6px -2px oklch(0.25 0.05 277 / 0.05), 0 16px 32px -6px oklch(0.25 0.05 277 / 0.16);
+    --highlight: oklch(1 0 0 / 0%);
+    --shadow-card-value: 0 1px 2px 0 oklch(0.25 0.05 277 / 0.05);
+    --glow: oklch(0.52 0.22 277 / 12%);
+    color-scheme: light;
+}
+
+.dark {
+    --background: oklch(0.155 0.01 277);
+    --foreground: oklch(0.965 0.006 277);
+    --card: oklch(0.185 0.012 277);
+    --card-foreground: oklch(0.965 0.006 277);
+    --popover: oklch(0.205 0.014 277);
+    --popover-foreground: oklch(0.965 0.006 277);
+    --primary: oklch(0.7 0.17 277);
+    --primary-foreground: oklch(0.16 0.04 277);
+    --secondary: oklch(0.24 0.016 277);
+    --secondary-foreground: oklch(0.95 0.008 277);
+    --muted: oklch(0.22 0.014 277);
+    --muted-foreground: oklch(0.7 0.02 277);
+    --accent: oklch(0.27 0.045 277);
+    --accent-foreground: oklch(0.9 0.05 277);
+    --border: oklch(1 0 0 / 8%);
+    --input: oklch(1 0 0 / 12%);
+    --ring: oklch(0.65 0.19 277);
+
+    --destructive: oklch(0.68 0.2 25);
+    --destructive-foreground: oklch(0.16 0.04 25);
+    --destructive-muted: oklch(0.68 0.2 25 / 14%);
+    --destructive-muted-foreground: oklch(0.82 0.11 25);
+    --success: oklch(0.72 0.17 152);
+    --success-foreground: oklch(0.17 0.04 152);
+    --success-muted: oklch(0.72 0.17 152 / 14%);
+    --success-muted-foreground: oklch(0.83 0.14 152);
+    --warning: oklch(0.8 0.15 80);
+    --warning-foreground: oklch(0.22 0.05 70);
+    --warning-muted: oklch(0.8 0.15 80 / 14%);
+    --warning-muted-foreground: oklch(0.86 0.12 85);
+    --info: oklch(0.7 0.15 245);
+    --info-foreground: oklch(0.16 0.04 245);
+    --info-muted: oklch(0.7 0.15 245 / 14%);
+    --info-muted-foreground: oklch(0.82 0.1 245);
+
+    --chart-1: oklch(0.7 0.17 277);
+    --chart-2: oklch(0.75 0.12 195);
+    --chart-3: oklch(0.8 0.15 80);
+    --chart-4: oklch(0.7 0.19 340);
+    --chart-5: oklch(0.72 0.17 152);
+
+    --sidebar: oklch(0.165 0.011 277);
+    --sidebar-foreground: oklch(0.965 0.006 277);
+    --sidebar-primary: oklch(0.7 0.17 277);
+    --sidebar-primary-foreground: oklch(0.16 0.04 277);
+    --sidebar-accent: oklch(0.27 0.045 277);
+    --sidebar-accent-foreground: oklch(0.9 0.05 277);
+    --sidebar-border: oklch(1 0 0 / 8%);
+    --sidebar-ring: oklch(0.65 0.19 277);
+
+    --shadow-xs-value: 0 1px 2px 0 oklch(0 0 0 / 0.3);
+    --shadow-sm-value: 0 1px 2px 0 oklch(0 0 0 / 0.3), 0 1px 3px 0 oklch(0 0 0 / 0.25);
+    --shadow-md-value: 0 2px 4px -1px oklch(0 0 0 / 0.3), 0 6px 12px -2px oklch(0 0 0 / 0.35);
+    --shadow-lg-value: 0 4px 6px -2px oklch(0 0 0 / 0.3), 0 16px 32px -6px oklch(0 0 0 / 0.5);
+    --highlight: oklch(1 0 0 / 6%);
+    --shadow-card-value: inset 0 1px 0 0 var(--highlight), 0 1px 2px 0 oklch(0 0 0 / 0.4);
+    --glow: oklch(0.7 0.17 277 / 18%);
+    color-scheme: dark;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/60;
+  }
+  html {
+    font-family: var(--font-sans);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-background text-foreground text-body antialiased;
+    font-feature-settings: "cv11", "ss03";
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--primary) 28%, transparent);
+  }
+  /* plain links / custom focusables get the same brand ring as shadcn controls */
+  :where(a, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+  code, kbd, samp, pre {
+    font-family: var(--font-mono);
+  }
+}
+
+/* Type scale. Use these instead of ad-hoc text-2xl/text-lg combinations.
+   Inter is loaded with the optical-size axis (opsz); the browser picks Inter Display automatically at large sizes. */
+@utility text-display {
+  font-size: 2.5rem;
+  line-height: 2.75rem;
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  @media (min-width: 40rem) {
+    font-size: 3.25rem;
+    line-height: 3.375rem;
+  }
+  @media (min-width: 64rem) {
+    font-size: 4rem;
+    line-height: 4.125rem;
+  }
+}
+@utility text-display-sm {
+  font-size: 2rem;
+  line-height: 2.25rem;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  @media (min-width: 40rem) {
+    font-size: 3rem;
+    line-height: 3.25rem;
+  }
+}
+@utility text-page-title {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 650;
+  letter-spacing: -0.028em;
+  @media (min-width: 40rem) {
+    font-size: 1.75rem;
+    line-height: 2.25rem;
+  }
+}
+@utility text-section-title {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+@utility text-card-title {
+  font-size: 0.9375rem;
+  line-height: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.011em;
+}
+@utility text-body {
+  font-size: 0.9375rem;
+  line-height: 1.5rem;
+}
+@utility text-caption {
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+}
+/* Mono label for section eyebrows, table headers, small captions. Neutral, never brand-coloured. */
+@utility text-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+/* Legacy name, same look as text-eyebrow. */
+@utility text-overline {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+/* Numbers: mono + tabular. Add a size class (text-xl, text-3xl...). For stats, %, deltas, counts, timers. */
+@utility text-metric {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+/* Cards use `shadow-card` (@theme --shadow-card): subtle shadow; in dark mode also a 1px top-edge highlight. */
+
+/* ---- Marketing / auth only: never use inside the app shell ---- */
+
+/* Faint dot field with a radial fade. Put on an absolutely positioned decorative layer (aria-hidden). */
+@utility bg-dots {
+  background-image: radial-gradient(color-mix(in oklab, var(--foreground) 14%, transparent) 1px, transparent 1.2px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 30%, transparent 100%);
+}
+/* Faint 1px grid, 32px pitch, with a radial fade. */
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 30%, transparent 100%);
+}
+/* Soft brand glow rising from the top edge (hero, closing CTA). */
+@utility bg-glow {
+  background-image: radial-gradient(ellipse 60% 55% at 50% 0%, var(--glow), transparent 70%);
+}
+/* "+" crosshair mark centred on its box (used by GuideJoint). */
+@utility guide-plus {
+  width: 11px;
+  height: 11px;
+  background:
+    linear-gradient(var(--muted-foreground), var(--muted-foreground)) center / 100% 1px no-repeat,
+    linear-gradient(var(--muted-foreground), var(--muted-foreground)) center / 1px 100% no-repeat;
+  opacity: 0.55;
+}

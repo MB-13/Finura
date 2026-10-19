@@ -1,0 +1,54 @@
+# secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# node
+node_modules/
+dist/
+.vite/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+
+# generated
+frontend/openapi.json
+
+# editors / OS
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# local data
+infra/llama/models/
+*.gguf
+
+# local runtime data (uploaded files, model caches)
+backend/.data/
+
+# Kaggle spike downloads
+notebook/spike/kaggle/results/unsloth_compiled_cache/
+
+# celery beat local state
+celerybeat-schedule*
+
+# local-only: Claude Code tooling, source .docx (converted to docs/design/doctune-design.md), one-off spikes
+.claude/
+CLAUDE.md
+*.docx
+notebook/spike/

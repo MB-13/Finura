@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.app.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "../node_modules/.tmp/tsconfig.preview.tsbuildinfo",
+    "types": ["vite/client"],
+    "paths": { "@/*": ["../src/*"] }
+  },
+  "include": ["./**/*.ts", "./**/*.tsx", "../src/**/*.d.ts"],
+  "exclude": ["../src/**/*.test.ts", "../src/**/*.test.tsx"]
+}
