@@ -48,7 +48,5 @@ notebook/spike/kaggle/results/unsloth_compiled_cache/
 celerybeat-schedule*
 
 # local-only: Claude Code tooling, source .docx (converted to docs/design/doctune-design.md), one-off spikes
-.claude/
-CLAUDE.md
 *.docx
 notebook/spike/
